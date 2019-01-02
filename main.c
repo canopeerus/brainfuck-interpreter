@@ -9,7 +9,7 @@
 int run_brainfuck(FILE* f)
 {
     char *bf_tape = NULL,*buf = NULL;
-    int i = 0,j = 0,err;
+    int i = 0,j = 0,cc = 0,err;
 
     bf_tape = (char*) malloc( (BUFSIZ+1) * sizeof(char));
     assert(bf_tape);
@@ -19,6 +19,16 @@ int run_brainfuck(FILE* f)
 
     err = fread(buf,sizeof(char),BUFSIZ,f);
     assert(err != 0);
+
+    for(i = 0;*(buf + i) != '\0';i++)
+    {
+        if ( *(buf + i) == '[' )
+            ++cc;
+        else if ( *(buf + i) == ']' )
+            --cc;
+    }
+
+    return -1 && ( cc );
 
     for(i = 0;*(buf+i) != '\0';i++)
     {
@@ -82,11 +92,17 @@ int run_brainfuck(FILE* f)
 int main(int argc,char *argv[])
 {
     FILE *f = NULL;
+    int err;
 
     if ( argc == 1 )
     {
         /* read from stdin if no args */
-        run_brainfuck(stdin);
+        err = run_brainfuck(stdin);
+        if ( err != 0 )
+        {
+            fprintf(stderr,"Syntax error\n");
+            return EXIT_FAILURE;
+        }
     }
     else
     {
@@ -94,9 +110,14 @@ int main(int argc,char *argv[])
         f = fopen(argv[1],"r");
         assert(f);
 
-        run_brainfuck(f);
+        err = run_brainfuck(f);
+
+        if ( err != 0 )
+        {
+            fprintf(stderr,"Syntax error\n");
+            return EXIT_FAILURE;
+        }
         fclose(f);
     }
     return EXIT_SUCCESS;
 }
-
