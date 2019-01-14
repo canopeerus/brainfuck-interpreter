@@ -6,4 +6,4 @@ all: main.o
 	$(CC) $(CFLAGS) main.o -o $(OUT)
 
 clean:
-	rm -f $(OUT)
+	rm -f $(OUT) main.o
