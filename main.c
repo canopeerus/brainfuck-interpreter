@@ -28,7 +28,8 @@ int run_brainfuck(FILE* f)
             --cc;
     }
 
-    return -1 && ( cc );
+    if ( cc )
+        return -1;
 
     for(i = 0;*(buf+i) != '\0';i++)
     {
