@@ -1,6 +1,9 @@
 CC = cc
-CFLAGS = -O2
+CFLAGS = -O2 
 OUT = bf
 
-all:
-	$(CC) $(CFLAGS) main.c -o $(OUT)
+all: main.o
+	$(CC) $(CFLAGS) main.o -o $(OUT)
+
+clean:
+	rm -f $(OUT)
